@@ -1,0 +1,449 @@
+{
+	"info": {
+		"_postman_id": "e1e70cda-dd8c-4528-b3cd-d0e6bfa2cd7c",
+		"name": "Recipe Management API",
+		"description": "API for managing recipes, including creation, updates, deletion, and searching.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11881037",
+		"_collection_link": "https://atisafunderportal.postman.co/workspace/Carepay~b25a00c5-faf4-432a-9c19-6c971fa71aa3/collection/11881037-e1e70cda-dd8c-4528-b3cd-d0e6bfa2cd7c?action=share&source=collection_link&creator=11881037"
+	},
+	"item": [
+		{
+			"name": "Create a Recipe",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Spaghetti Bolognese\",\n    \"type\": \"VEGETARIAN\",\n    \"servings\": 4,\n    \"ingredients\": [\n        {\n            \n            \"name\": \"Spaghetti\"\n        },\n        {\n            \n            \"name\": \"Ground Beef\"\n        },\n        {\n            \n            \"name\": \"Tomato Sauce\"\n        }\n    ],\n    \"steps\": [\n        {\n            \n            \"stepId\": 1,\n            \"instructions\": \"Boil the spaghetti.\"\n        },\n        {\n            \n            \"stepId\": 2,\n            \"instructions\": \"Cook the ground beef.\"\n        },\n        {\n            \n            \"stepId\": 3,\n            \"instructions\": \"Mix the beef with the tomato sauce.\"\n        }\n    ]\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/recipes/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipes",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recipe by Recipe ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recipe by UserID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Recipe",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"recipeId\": 21,\n    \"name\": \"food item\",\n    \"recipeType\": \"VEGETARIAN\",\n    \"servings\": 10,\n    \"userId\": 9,\n    \"ingredients\": [\n        {\n            \"ingredientId\": 23,\n            \"ingredientName\": \"Water\"\n        },\n        {\n            \"ingredientId\": 21,\n            \"ingredientName\": \"salt\"\n        },\n        {\n            \"ingredientId\": 22,\n            \"ingredientName\": \"balt\"\n        },\n        {\n            \n            \"ingredientName\": \"black salt\"\n        }\n    ],\n    \"step\": {\n        \"rsid\": 16,\n        \"instructions\": \"eat this crap or you die\",\n        \"recipeId\": 21\n    }\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/recipes/update/18",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"recipes",
+						"update",
+						"18"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Recipe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - Veg",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - Servings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - Ingredient(include)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - Ingredient(exclude)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - Instructions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Recipe - All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/recipes/search?isVegetarian=true&servings=4&includeIngredients=Potatoes&instructionText=oven",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"recipes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "isVegetarian",
+							"value": "true"
+						},
+						{
+							"key": "servings",
+							"value": "4"
+						},
+						{
+							"key": "includeIngredients",
+							"value": "Potatoes"
+						},
+						{
+							"key": "instructionText",
+							"value": "oven"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a User",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userName\": \"JohnDoe\",\n    \"password\": \"password123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
