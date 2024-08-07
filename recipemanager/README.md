@@ -1,11 +1,8 @@
-
----
-
 # Recipe Manager
 
 ## Overview
 
-The Recipe Manager application allows users to create, update, search, and delete recipes. It supports functionalities such as managing ingredients, steps, and user profiles. This README provides details on the architectural choices, setup, and running the application.
+The Recipe Manager application allows users to create, update, search, and delete recipes. It supports functionalities such as managing ingredients, recipe instructions, and user profiles. This README provides details on the architectural choices, setup, and running the application.
 
 ## Table of Contents
 
@@ -185,7 +182,7 @@ mvn verify
 
 1. Clone the repository:
     ```bash
-    git clone 
+    git clone
     ```
 
 2. Build the project:
@@ -217,7 +214,4 @@ mvn verify
 
 5. Service layer abstraction
 
-
-
-
----
+6. Recipe search currently works on 'OR' operation, can be enhanced for 'AND' operation
