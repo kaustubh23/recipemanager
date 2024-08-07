@@ -31,234 +31,119 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-
     @Operation(
             summary = "Create Recipe REST API",
             description = "REST API to create new Recipe"
     )
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "HTTP Status CREATED"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+            @ApiResponse(responseCode = "201", description = "Recipe created successfully"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> addRecipe(@Valid @RequestBody RecipeDTO recipeDTO) {
-
         try {
             RecipeDTO savedRecipe = recipeService.addRecipe(recipeDTO);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(new ResponseDto(RecipeConstants.STATUS_201, String.format(RecipeConstants.MESSAGE_201,savedRecipe.getName())));
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ResponseDto(RecipeConstants.STATUS_201, String.format(RecipeConstants.MESSAGE_201, savedRecipe.getName())));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseDto("Error while creating recipe: ", e.getMessage())); // Customize error response as needed
+            return ResponseEntity.badRequest()
+                    .body(new ResponseDto("Error while creating recipe", e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(new ResponseDto("Error while creating recipe: ", e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto("Error while creating recipe", e.getMessage()));
         }
     }
 
-
-    @Operation(
-            summary = "Fetch Recipe by recipeId",
-            description = "REST API to fetch recipe by recipeId"
-    )
+    @Operation(summary = "Fetch Recipe by recipeId", description = "REST API to fetch recipe by recipeId")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status CREATED"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
-
+            @ApiResponse(responseCode = "200", description = "Recipe fetched successfully"),
+            @ApiResponse(responseCode = "404", description = "Recipe not found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @GetMapping("/get/{id}")
     public ResponseEntity<RecipeDTO> getRecipeById(@PathVariable Long id) {
         Optional<RecipeDTO> recipeDetails = recipeService.getRecipeById(id);
-        return recipeDetails.map(recipeDto -> ResponseEntity.status(HttpStatus.OK).body(recipeDto)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return recipeDetails.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @Operation(
-            summary = "Update Recipe Details REST API",
-            description = "REST API to update Recipe details "
-    )
+    @Operation(summary = "Update Recipe Details REST API", description = "REST API to update Recipe details")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "417",
-                    description = "Expectation Failed"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+            @ApiResponse(responseCode = "200", description = "Recipe updated successfully"),
+            @ApiResponse(responseCode = "417", description = "Expectation Failed"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDto> updateRecipe(@PathVariable Long id,@Valid @RequestBody RecipeDTO recipeDTO) {
-
+    public ResponseEntity<ResponseDto> updateRecipe(@PathVariable Long id, @Valid @RequestBody RecipeDTO recipeDTO) {
         try {
             RecipeDTO updatedRecipe = recipeService.updateRecipe(id, recipeDTO);
-            if (updatedRecipe!=null) {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(new ResponseDto(RecipeConstants.STATUS_200, String.format(RecipeConstants.MESSAGE_200, updatedRecipe)));
+            if (updatedRecipe != null) {
+                return ResponseEntity.ok(new ResponseDto(RecipeConstants.STATUS_200, String.format(RecipeConstants.MESSAGE_200, updatedRecipe.getName())));
             } else {
-                return ResponseEntity
-                        .status(HttpStatus.EXPECTATION_FAILED)
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                         .body(new ResponseDto(RecipeConstants.STATUS_417, RecipeConstants.MESSAGE_417_UPDATE));
             }
-
         } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new ResponseDto("Error while creating recipe: ", e.getMessage())); // Customize error response as needed
+            return ResponseEntity.badRequest()
+                    .body(new ResponseDto("Error while updating recipe", e.getMessage()));
         }
     }
 
-    @Operation(
-            summary = "Delete Recipe Details REST API",
-            description = "REST API to delete  Recipe details "
-    )
+    @Operation(summary = "Delete Recipe Details REST API", description = "REST API to delete Recipe details")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "417",
-                    description = "Expectation Failed"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+            @ApiResponse(responseCode = "200", description = "Recipe deleted successfully"),
+            @ApiResponse(responseCode = "417", description = "Expectation Failed"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDto> deleteRecipe(@PathVariable Long id) {
-        boolean  isDeleted=  recipeService.deleteRecipe(id);
-
-
+        boolean isDeleted = recipeService.deleteRecipe(id);
         if (isDeleted) {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new ResponseDto(RecipeConstants.STATUS_200, RecipeConstants.MESSAGE_200));
+            return ResponseEntity.ok(new ResponseDto(RecipeConstants.STATUS_200, RecipeConstants.MESSAGE_200));
         } else {
-            return ResponseEntity
-                    .status(HttpStatus.EXPECTATION_FAILED)
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(RecipeConstants.STATUS_417, RecipeConstants.MESSAGE_417_DELETE));
         }
     }
 
-
-    @Operation(
-            summary = "Search Recipe Details REST API",
-            description = "REST API to Search  Recipe details based on type, ingredient, instructions and servings"
-    )
+    @Operation(summary = "Search Recipe Details REST API", description = "REST API to search Recipe details based on type, ingredient, instructions, and servings")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status OK"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
-
+            @ApiResponse(responseCode = "200", description = "Recipes found"),
+            @ApiResponse(responseCode = "404", description = "No recipes found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @GetMapping("/search")
     public ResponseEntity<List<RecipeDTO>> searchRecipes(
-            @RequestParam(required = false) RecipeType recipeType,  // Accept RecipeType enum
+            @RequestParam(required = false) RecipeType recipeType,
             @RequestParam(required = false) Integer servings,
             @RequestParam(required = false) List<String> includeIngredients,
             @RequestParam(required = false) List<String> excludeIngredients,
             @RequestParam(required = false) String instructions) {
 
-        List<RecipeDTO> recipes = recipeService.searchRecipes(
-                recipeType,
-                servings,
-                includeIngredients,
-                excludeIngredients,
-                instructions);
+        List<RecipeDTO> recipes = recipeService.searchRecipes(recipeType, servings, includeIngredients, excludeIngredients, instructions);
 
-        if(recipes!=null && recipes.isEmpty()) {
-            return new ResponseEntity<>(recipes, HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(recipes, HttpStatus.OK);
+        if (recipes != null && !recipes.isEmpty()) {
+            return ResponseEntity.ok(recipes);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-
     }
 
-
-    @Operation(
-            summary = "Fetch Recipe by userId",
-            description = "REST API to fetch recipe by userId"
-    )
+    @Operation(summary = "Fetch Recipe by userId", description = "REST API to fetch recipes by userId")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "HTTP Status CREATED"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not Found"
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "HTTP Status Internal Server Error",
-                    content = @Content(
-                            schema = @Schema(implementation = ErrorResponseDto.class)
-                    )
-            )
-    }
-    )
+            @ApiResponse(responseCode = "200", description = "Recipes fetched successfully"),
+            @ApiResponse(responseCode = "404", description = "No recipes found"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+    })
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<RecipeDTO>> getRecipesByUserId(@PathVariable Long userId) {
         List<RecipeDTO> recipes = recipeService.getRecipesByUserId(userId);
 
-        if(recipes!=null && !recipes.isEmpty()) {
-            return new ResponseEntity<>(recipes, HttpStatus.OK);
-        }else{
-            return   new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if (recipes != null && !recipes.isEmpty()) {
+            return ResponseEntity.ok(recipes);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 }
+
